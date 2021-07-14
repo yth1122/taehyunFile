@@ -1,0 +1,82 @@
+
+@import '../font/font.scss';
+
+$m_blue: #2B90D9;
+$pale_blue: #F4FAFF;
+$m_red: #E46262;
+$pale_red: #FFF8F8;
+$m_yellow: #fcc863;
+$m_pale: #D9E1E8;
+$m_gray: #9BAEC8;
+$m_black: #282C37;
+$light_gray: #f1f1f1;
+$pale_text: #bbbbbb;
+$apple_green: #7ebc8c;
+$sky_blue: #90CAE3;
+
+@mixin date_front_icon {
+  // 감싸는 애한테 relative 필수
+
+  position: relative !important;
+  min-width: 150px;
+
+  // &::-webkit-datetime-edit {}
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 5px 8px 0;
+    position: relative !important;
+    left: 28px;
+  }
+  &::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    background-position: center center !important;
+  }
+
+  &:read-only {
+    min-width: 90px !important;
+
+    &::-webkit-datetime-edit-fields-wrapper {
+      left: 0 !important;
+      padding-left: 0 !important;
+    }
+  }
+
+}
+
+
+// 반응형 설정
+// breakpoint 이하 bp
+$bp-desktop: 1280px; 
+$bp-desktop2: 1024px; 
+$bp-tablet: 758px; 
+$bp-mobile: 320px; 
+
+// 화면이 1280 이하로 줄었을 때
+@mixin relative-web {
+  @media all and ( max-width: #{$bp-desktop} ) {
+    @content;
+  }
+}
+// 화면이 1024 이하로 줄었을 때
+@mixin relative-web2 {
+  @media all and ( max-width: #{$bp-desktop2} ) {
+    @content;
+  }
+}
+
+// 화면이 758보다 작을 때
+@mixin relative-tablet {
+  @media all and ( max-width: #{$bp-tablet} ) {
+    @content;
+  }
+}
+
+// 모바일
+@mixin relative-mobile {
+  @media all and ( max-width: #{$bp-mobile} ) {
+    @content;
+  }
+}
+

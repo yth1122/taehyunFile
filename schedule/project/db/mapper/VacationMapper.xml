@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VACATION">
+	
+    <select id= "LIST">
+        <![CDATA[
+        select u.color,v.no, u.name,
+        case when v.comment like '%#%' then v.comment else v.date end date 
+        ,v.comment,c.name as cname,v.stime,v.etime from caps_vac v
+        inner join caps_user u on v.id=u.id 
+        inner join vac_code c on v.code=c.code 
+        where v.date like #{date} and v.comment not like '%#%' 
+        union
+        select u.color,v.no, u.name,
+        case when v.comment like '%#%' then v.comment else v.date end date 
+        ,v.comment,c.name as cname,v.stime,v.etime from caps_vac v
+        inner join caps_user u on v.id=u.id 
+        inner join vac_code c on v.code=c.code 
+        where v.comment like #{date1}      
+        group by v.id,v.code,v.date,v.stime,v.etime,v.comment order by date,stime asc
+        ]]>
+    </select> 
+       
+    <select id="READ">
+       select v.no, u.name,v.date,c.name as cname,v.stime,v.etime,v.regdate,u.bnum,v.comment from caps_vac v
+        inner join caps_user u on v.id=u.id 
+        inner join vac_code c on v.code=c.code 
+        where v.date between #{sdate} and #{edate} and v.id=#{id} and v.comment not like '%#%' 
+        union
+        select v.no, u.name,v.date,c.name as cname,v.stime,v.etime,v.regdate,u.bnum,v.comment from caps_vac v
+        inner join caps_user u on v.id=u.id 
+        inner join vac_code c on v.code=c.code 
+        where  v.id=#{id} and v.comment like '%#%' 
+        group by v.id,v.code,v.date,v.stime,v.etime,v.comment order by no desc
+    </select> 
+
+    <insert id="INSERT">
+        insert into caps_vac(id,date,code,stime,etime,regdate,comment) values(#{id},#{date},#{code},#{stime},#{etime},curdate(),#{comment})
+    </insert>
+
+    <delete id="DELETE">
+        delete from caps_vac where no= #{no}
+    </delete>
+
+    <update id="UPDATE">
+        update caps_vac set code=#{code} 
+        ,date=#{date} 
+        ,comment=#{comment}
+        ,stime=#{stime}
+        ,etime=#{etime}
+        ,regdate=curdate() 
+        where no=#{no}
+    </update>
+
+    <update id='BIGO'>
+        update caps_user set comment=#{comment} 
+        <if test ="mdate!=undefined">  
+        ,mdate=#{mdate}
+        </if>
+        where id=#{id}
+    </update>
+   
+</mapper>

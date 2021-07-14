@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="USER">
+	
+  <select id= "SEARCH">
+      <![CDATA[
+	        select no,name,date,type from caps_data 
+	        where 
+	        date
+		      >= #{sdate}
+          and date <= #{edate}
+		      and type like #{type}
+			    and name like #{name}
+          order by date desc
+      ]]>
+  </select>
+	
+  <select id='BNUM'>
+      select bnum,name from caps_user where id=#{id}
+  </select>
+  
+  <update id='SETB'>
+      update caps_user set bnum=bnum + #{bnum} where id=#{id}
+  </update>
+    
+  <update id='NOTB'>
+      update caps_user set bnum='0' where id=#{id}
+  </update>
+
+  <select id='USE'>
+      select v.comment,v.no,v.code,c.name,v.etime,v.stime,v.date from caps_vac v 
+      inner join vac_code c on v.code= c.code  
+      where date between #{sdate} and #{edate} 
+      and id=#{id}  
+      union
+      select v.comment,v.no,v.code,c.name,v.etime,v.stime,v.date from caps_vac v 
+      inner join vac_code c on v.code= c.code  
+      where v.comment like '%#%' 
+      and id=#{id}  group by code,id,comment,date,stime order by date asc
+  </select>
+
+  <select id='DATE'>
+      select id,date,bnum from caps_user where id=#{id}
+  </select>
+
+  <select id='DATEALL'>
+      select u.name,u.date,u.id,u.bnum,u.mdate,u.comment,p.name as part,u.code  
+      from caps_user u inner join caps_part p on u.code= p.code order by u.code,u.date asc
+  </select>
+
+  <select id='NAME'>
+      select id,name,code,gender from caps_user where email=#{email}
+  </select>
+
+  <select id='READ'>
+      select u.name,c.name as cname,v.id,v.code,v.date,v.stime,v.etime,v.comment 
+      from caps_vac v inner join caps_user u on u.id=v.id
+      inner join vac_code c on c.code=v.code where no=#{no}
+  </select>
+
+  <select id='READM'>
+      select mdate,comment from caps_user where id=#{id}
+  </select>  
+
+</mapper>
