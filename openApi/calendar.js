@@ -8,13 +8,12 @@ const { OAuth2 } = google.auth
 var vacationSQL=require('../sql/vacationSQL');
 // Create a new instance of oAuth and set our Client ID & Client Secret.
 const oAuth2Client = new OAuth2(
-  '355912080212-f216o2oi8ejn8l4jo2qh5517ph9gr0d6.apps.googleusercontent.com',
-  'T82oQb8lODiBywcRYaCA50js'
+  //key
 )
 
 // Call the setCredentials method on our oAuth2Client instance and set our refresh token.
 oAuth2Client.setCredentials({
-  refresh_token: '1//04EOMnKMQcNyLCgYIARAAGAQSNwF-L9IrELcUNudGoZpzu40mPfzEdYPnkjSC5tW7MP4bStANHPe9-wH3FMnFwwpuUI8ZEqMiPBo',
+  refresh_token://refresh ,
 })
 
 // Create a new calender instance.
