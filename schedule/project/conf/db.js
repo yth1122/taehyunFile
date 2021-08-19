@@ -5,13 +5,13 @@ let pool;
 const createPool = async  () =>{
   pool = await promiseMysql.createPool({
   host     : 'google',
-  //socketPath: '/cloudsql/centered-sight-237801:asia-northeast3:test',
-  // port      : '3306',
-  host     : '192.168.0.103',
-  port     : 3306,
-  user     : 'xiphoid',
-  password : 'wkfgkwk!@12',
-  database : 'capsdb',
+  //socketPath: 'xxxxx',
+  // port      : 'xxx',
+  host     : 'xxxx',
+  port     : xxx,
+  user     : 'xxx',
+  password : 'xxxx',
+  database : 'xxxx',
   connectionLimit: 5
 });
 };
