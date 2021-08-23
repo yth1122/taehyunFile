@@ -10,13 +10,13 @@ router.get('/',async function(req, res) {
             {
                 username: 'taehyun',
                 type:'human',
-                comment:'fuck'
+                comment:'hellow'
             }, 
             secret, 
             {
-                expiresIn: '5d',
-                issuer: 'taetae.com',
-                subject: 'userInfo'
+                expiresIn: '5d',//토큰 만료시간
+                issuer: 'taetae.com',//토큰 발행자
+                subject: 'userInfo'//토큰 제목
             }, (err, token) => {
                 if (err) reject(err)
                 resolve(token) 
