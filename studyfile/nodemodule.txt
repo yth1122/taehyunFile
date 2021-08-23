@@ -1,0 +1,37 @@
+# express module
+
+#dotenv
+require(‘dotenv’).config();
+.env파일을 불러와 사용 
+Ex) config 처럼 아이디 비밀번호를 불러와 사용할때   .env  id:taehyun,pwd:1234
+console.log(process.env.id)=taehyun
+console.log(process.env.pwd)=1234
+#morgan
+const logger = require(‘Morgan’);
+app.use(logger(‘dev’));
+Dev,combined,tiny,common,short
+설정시 라우팅에서 get,post,delete,patch 사용시 
+[image:17845A9A-60BE-46F5-8C41-7EE736075BB3-445-0000075CCA46FEA2/239ED01E-C574-41F2-9F71-5097A4A24ABC.png]
+이런식으로 콘솔에 상태및 반응속도 표시
+#static
+ static 미들웨어는 정적인 파일들을 제공하는 라우터 역할을 합니다. 따로 설치할 필요없이 express객체안에서 꺼내 장착하면됨 
+app.use(‘요청경로’,express.static(’실제경로’))
+app.use(express.static(path.join(__dirname,’public’)));
+Ex) public folder안에 style.css가 존재 시 
+public/stylesheets/style.css는 http://localgost:3000/stylesheets/styles.css로 접근한다.
+#body-parser
+app.use(bodyParser.urelencoded({}))
+req.body로 데이터를 post로 받을때 사용 밑 urlencoded 참조 
+#urlencoded
+app.use(express.urlencoded({ extended: false }));
+extend true (qs) / false(query-string)
+Ex)
+person[name]=bobby&person[age]=3
+qs={ person: { name: ‘bobby’, age: ‘3’ } }
+Query-string= { ‘person[age]’: ‘3’, ‘person[name]’: ‘bobby’ }
+#cookie-parser
+const cookieParser = require(‘cookie-parser’);
+app.use(cookieParser());
+[image:8CF6C423-2164-4E93-AC06-C83C2D3919A7-445-0000093FCE6F2E05/696197EE-2A13-43BF-A1CC-010A8E872A37.png]
+[image:A1A25570-35FE-4FE9-B632-5B3C389FCCBB-445-000009476996A502/55EBAA85-0178-4346-A777-DD703D093DF3.png]
+
