@@ -1,7 +1,6 @@
 const SocketIO = require('socket.io');
 
 module.exports = (server) =>{
-	console.log('gg');
 	const io = SocketIO(server, {path : '/socket.io'});
 	io.on('connection', (socket) => {
 		const req = socket.request;
@@ -19,7 +18,7 @@ module.exports = (server) =>{
 			console.log(data)
 		});
 		socket.interval = setInterval(()=>{
-			socket.emit('news','hellow')
+			socket.emit('news','gg')
 		},3000);
 	})
 }

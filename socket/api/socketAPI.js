@@ -1,11 +1,14 @@
 var express = require('express');
-const { render } = require('../app');
 var router = express.Router();
 
 router.get('/',function(req,res){
-	res.render('index.html');
-
-});
+	try{
+		res.cookie('user',{name:'taehyun',age:28})
+		res.render('index.html');
+	}catch(err){
+		res.status(500).send(err);
+	}
+})
 
 
 
