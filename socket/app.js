@@ -39,6 +39,6 @@ const server = app.listen(port, () => {
   console.log(`Server is listening on ${port}`);
 });
 
-webSocket(server);
+webSocket(server,app);
 
 module.exports = app;
