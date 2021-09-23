@@ -10,6 +10,11 @@ const port = '3000';
 const connect = require('./schema');
 const webSocket = require('./socket/socket.js');
 app.set('view engine', 'ejs');
+const nunjucks = require('nunjucks');
+nunjucks.configure('views', {
+  express: app,
+  watch: true,
+});
 app.engine('html', require('ejs').renderFile);
 connect();
 app.use(express.json());
