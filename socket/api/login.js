@@ -69,12 +69,12 @@ router.post('/login',async function(req,res){
 											resolve(token) 
 									})
 					}).then(token=>{
-							res.send('로그인 성공');
 							// res.redirect('http://localhost:3000/regUser');	
 							localStorage.setItem('data',token);
 							const g = jwt.verify(token,secret);
 							// console.log(localStorage.getItem('data'));
 							console.log(g);
+							res.redirect('/');
 							// res.send(g);
 						}).catch(err=>{
 								console.log(err);

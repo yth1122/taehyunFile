@@ -22,7 +22,8 @@
 				var id = $('.id').val();
 				var pw = $('.pw').val();
 				axios.post('/login/login',{id:id,pw:pw}).then(r=>{
-					alert(r.data);
+					console.log(r.data);
+					// alert(r.data);
 				});
 				
 			})

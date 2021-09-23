@@ -41,6 +41,7 @@
 		path:'/socket.io',
 	});
 	socket.on('newRoom',function(data){
+		console.log('ggg');
 		const tr = document.createElement('tr');
 		let td = document.createElement('td');
 		td.textContent=data.title;

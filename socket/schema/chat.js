@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const { Types:{ objectId } } = schema;
+const { Types:{ ObjectId } } = Schema;
 const chatSchema = new Schema({
 	room:{
-		type: objectId ,
+		type: ObjectId ,
 		required:true,
 		ref:'Room',
 	},
