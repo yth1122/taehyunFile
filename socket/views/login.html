@@ -21,11 +21,22 @@
 			$('.submit').on('click',function(){
 				var id = $('.id').val();
 				var pw = $('.pw').val();
-				axios.post('/login/login',{id:id,pw:pw}).then(r=>{
-					console.log(r.data);
-					// alert(r.data);
+				if(!id){
+					alert('id 를 입력해주세요');
+					$('.id').focus();
+				}else if (!pw){
+					alert('password를 입력해주세요');
+					$('.pw').focus();
+				}else{
+					axios.post('/login/login',{id:id,pw:pw}).then(r=>{
+					if(r.data=='ok'){
+						console.log('hh');
+						location.href='/';
+					}else{
+						alert(r.data);
+					}
 				});
-				
+				}
 			})
 
 

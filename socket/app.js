@@ -4,18 +4,17 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Router = require('./router/router');
-const socket = require('./socket/socket');
 const app = express();
 const port = '3000';
 const connect = require('./schema');
 const webSocket = require('./socket/socket.js');
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
 const nunjucks = require('nunjucks');
 nunjucks.configure('views', {
   express: app,
   watch: true,
 });
-app.engine('html', require('ejs').renderFile);
+// app.engine('html', require('ejs').renderFile);
 connect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

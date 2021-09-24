@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
-const localStorage = require("localStorage");
+// const localStorage = require("localStorage");
+const store = require('store');
 const crypto = require('crypto');
-
 var userMongo= require('../schema/user');
-const { render } = require('../app');
 
 //회원가입
 router.post('/',async function(req,res){
@@ -14,7 +13,6 @@ router.post('/',async function(req,res){
 	await crypto.randomBytes(64,(err,buf)=>{
 		crypto.pbkdf2(req.body.pw , 'YTH' , 100000 , 64 , 'sha512',(err,key)=>{
 			password = key.toString('base64');
-			console.log(password);
 			userMongo.create({
 				id:req.body.id,
 				name:req.body.name,
@@ -22,7 +20,6 @@ router.post('/',async function(req,res){
 			})  
 		})
 	})
-	
 	res.redirect('/login');
 })
 //아이디 중복 체크
@@ -69,13 +66,14 @@ router.post('/login',async function(req,res){
 											resolve(token) 
 									})
 					}).then(token=>{
-							// res.redirect('http://localhost:3000/regUser');	
-							localStorage.setItem('data',token);
-							const g = jwt.verify(token,secret);
-							// console.log(localStorage.getItem('data'));
-							console.log(g);
-							res.redirect('/');
-							// res.send(g);
+							console.log(token)
+							// store.set('jwt',token);
+							res.cookie('jwt',token)
+								 .send('ok');
+							//localStorage.setItem('jwt',token);
+							// const g = jwt.verify(token,secret);
+							// console.log(g); 
+							
 						}).catch(err=>{
 								console.log(err);
 						});
@@ -89,14 +87,14 @@ router.post('/login',async function(req,res){
 })
 
 router.get('/logout',function(req,res){
-	const secret = req.app.get('jwt-secret');
-	localStorage.removeItem('data');
-	console.log(localStorage.getItem('data'));
-	res.redirect('/');
+	// const secret = req.app.get('jwt-secret');
+	// localStorage.removeItem('data');
+	res.clearCookie('jwt')
+		 .redirect('/login');
 });
 
-
 router.get('/',function(req,res){
+	console.log('why');
 	try{
 		// res.cookie('user',{name:'taehyun',age:28})
 		res.render('login.html');
