@@ -14,12 +14,27 @@ module.exports = (server,app) =>{
 		})	
 
 	});
-	chat.on('connection',(socket)=>{
-		console.log('chat 접속');
-		socket.on('disconnect',()=>{
-			console.log('chat 접속해제');
-		})
-	})
+	
+	chat.on('connection', (socket) => {
+    console.log('chat 네임스페이스에 접속');
+    const req = socket.request;
+		// console.log(req.headers.cookie.split(';'));
+    const { headers: { referer } } = req;
+    const roomId = referer
+      .split('/')[referer.split('/').length - 1]
+      .replace(/\?.+/, '');
+		;
+		console.log(roomId);
+    socket.join(roomId);
+    socket.to(roomId).emit('join', {
+      user: 'system',
+      chat: `dd님이 입장하셨습니다.`,
+    })
+	});
+
+
+
+
 
 	room.on('connection',(socket)=>{
 		console.log('room 접속');

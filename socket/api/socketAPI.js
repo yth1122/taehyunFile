@@ -69,18 +69,19 @@ router.post('/room', async (req, res, next) => {
   });
 
 router.post('/room/:id/chat', async (req, res, next) => {
-		// try {
-		// 	const chat = await Chat.create({
-		// 		room: req.params.id,
-		// 		user: ,
-		// 		chat: req.body.chat,
-		// 	});
-		// 	req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
-		// 	res.send('ok');
-		// } catch (error) {
-		// 	console.error(error);
-		// 	next(error);
-		// }
+	console.log(req.body);	
+	try {
+			const chat = await Chat.create({
+				room: req.params.id,
+				user: req.body.user,
+				chat: req.body.chat,
+			});
+			req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+			res.send('ok');
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
 });
 
 
@@ -103,7 +104,6 @@ router.get('/room/:id', async (req, res, next) => {
 		return res.redirect('/?error=허용 인원이 초과하였습니다.');
 	  }
 	  const chats = await Chat.find({ room: room._id }).sort('createdAt');
-		console.log(chats);
 	  return res.render('chat', {
 		room,
 		title: room.title,
