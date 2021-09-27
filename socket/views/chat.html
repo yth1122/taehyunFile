@@ -3,7 +3,6 @@
 {% block content %}
   <h1>{{title}}</h1>
   <a href="/" id="exit-btn">방 나가기</a>
-  <a  class='remove' id='remove-btn'>방 삭제</a>
   <fieldset>
     <legend>채팅 내용</legend>
     <div id="chat-list">
@@ -11,8 +10,8 @@
         {% if chat.user === user %}
           <div class="mine" >
             <div>{{chat.user}}</div>
-            {% if chat.gif %}}
-              <img src="/gif/{{chat.gif}}">
+            {% if chat.gif %}
+              <img src="/gif/{{chat.gif}}" >
             {% else %}
               <div>{{chat.chat}}</div>
             {% endif %}
@@ -35,9 +34,9 @@
     </div>
   </fieldset>
   <form action="/chat" id="chat-form" method="post" enctype="multipart/form-data">
-    <label for="gif">GIF 올리기</label>
+    <label for="gif">파일 올리기</label>
     <input type='hidden' id='user' name='user' value="{{user}}">
-    <input type="file" id="gif" name="gif" accept="image/gif">
+    <input type="file" id="gif" name="gif" accept=".jpg, .jpeg, .png , .gif">
     <input type="text" id="chat" name="chat">
     <button type="submit">전송</button>
   </form>
@@ -49,7 +48,6 @@
       path: '/socket.io',
     });
     socket.on('join', function (data) {
-      console.log(data)
       const div = document.createElement('div');
       div.classList.add('system');
       const chat = document.createElement('div');
@@ -66,7 +64,6 @@
       document.querySelector('#chat-list').appendChild(div);
     });
     socket.on('chat', function (data) {
-      console.log(data);
       const div = document.createElement('div');
       if (data.user === '{{user}}') {
         div.classList.add('mine');
@@ -102,6 +99,15 @@
         });
       }
     });
+    // function fuck(a){
+    //   var image = document.createElement('img');
+    //   image.src = '/gif/' + a;
+    //   document.querySelector('#chat-list').appendChild(image);
+    //   console.log(a);
+    // }
+    // document.querySelector('img').addEvenetListener('click',function(e){
+    //   console.log(e);
+    // })
     document.querySelector('#gif').addEventListener('change', function (e) {
       console.log(e.target.files);
       const formData = new FormData();

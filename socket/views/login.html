@@ -30,7 +30,6 @@
 				}else{
 					axios.post('/login/login',{id:id,pw:pw}).then(r=>{
 					if(r.data=='ok'){
-						console.log('hh');
 						location.href='/';
 					}else{
 						alert(r.data);

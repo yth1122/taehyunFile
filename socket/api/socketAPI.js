@@ -4,6 +4,9 @@ const localStorage = require("localStorage");
 const jwt = require('jsonwebtoken');
 const Room = require('../schema/room');
 const Chat = require('../schema/chat');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 
 function check(req,res){
 	if(!req.cookies.jwt){
@@ -37,7 +40,6 @@ router.get('/',async function(req,res){
 			console.log('go main')
 	 		res.render('main',{rooms,title:'TAETAE'});
 		}
-		// res.cookie('user',{name:'taehyun',age:28})
 	}catch(err){
 		res.status(500).send(err);
 	}
@@ -83,15 +85,56 @@ router.post('/room/:id/chat', async (req, res, next) => {
 		}
 });
 
+try {
+	//uploads 에서 찾고
+  fs.readdirSync('uploads');
+} catch (err) {
+	//없을시 uploads폴더 생성
+  console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+  fs.mkdirSync('uploads');
+};
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads/');
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+			//같은사진 중복으로 올릴수있게 올린 파일 네임에 시간을 붙혀서 업로드
+      done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+
+router.post('/room/:id/gif', upload.single('gif'), async (req, res, next) => {
+  const secret = req.app.get('jwt-secret');
+	try {
+		//req에서 쿠키를 받아 지정해둔 jwt token secret을 사용하여 id값을 받아옴 이름 사용시 g.name
+		var token= req.cookies.jwt;
+		const g = jwt.verify(token,secret);
+    const chat = await Chat.create({
+      room: req.params.id,
+      user: g.id,
+      gif: req.file.filename,
+    });
+    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+    res.send('ok');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 
 
 router.get('/room/:id', async (req, res, next) => {
-	// console.log(req.app);
 	const secret = req.app.get('jwt-secret');
 	try {
 		var token= req.cookies.jwt;
 		const g = jwt.verify(token,secret);
-		// const map = {user:'system',chat:g.id+'님이 입장하셨습니다'}
 	  const room = await Room.findOne({ _id: req.params.id });
 	  const io = req.app.get('io');
 	  if (!room) {
@@ -105,7 +148,6 @@ router.get('/room/:id', async (req, res, next) => {
 		return res.redirect('/?error=허용 인원이 초과하였습니다.');
 	  }
 	  const chats = await Chat.find({ room: room._id }).sort('createdAt');
-	  // req.app.get('io').of('/chat').emit('join',map);
 	  return res.render('chat', {
 		room,
 		title: room.title,
@@ -116,7 +158,7 @@ router.get('/room/:id', async (req, res, next) => {
 	  console.error(error);
 	  return next(error);
 	}
-  });
+});
 
 
 module.exports = router ;
