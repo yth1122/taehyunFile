@@ -3,7 +3,7 @@
 {% block content %}
   <h1>{{title}}</h1>
   <a href="/" id="exit-btn">방 나가기</a>
-  <a href='/' class='remove' id='remove-btn'>방 삭제</a>
+  <a  class='remove' id='remove-btn'>방 삭제</a>
   <fieldset>
     <legend>채팅 내용</legend>
     <div id="chat-list">
@@ -53,7 +53,7 @@
       const div = document.createElement('div');
       div.classList.add('system');
       const chat = document.createElement('div');
-      div.textContent = '{{user}}님이 입장하셨습니다.';
+      div.textContent = data.chat;
       div.appendChild(chat);
       document.querySelector('#chat-list').appendChild(div);
     });
@@ -85,7 +85,6 @@
         gif.src = '/gif/' + data.gif;
         div.appendChild(gif);
       }
-      div.style.color = data.user;
       document.querySelector('#chat-list').appendChild(div);
     });
     document.querySelector('#chat-form').addEventListener('submit', function (e) {
@@ -95,12 +94,12 @@
           chat: this.chat.value,
           user : this.user.value,
         })
-          .then(() => {
-            e.target.chat.value = '';
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        .then(() => {
+          e.target.chat.value = '';
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       }
     });
     document.querySelector('#gif').addEventListener('change', function (e) {
@@ -116,4 +115,7 @@
         });
     });
   </script>
+  <style>
+   
+  </style>
 {% endblock %}

@@ -1,12 +1,13 @@
 const SocketIO = require('socket.io');
-
+const jwt = require('jsonwebtoken');
+// const secret = req.app.get('jwt-secret');
 module.exports = (server,app) =>{
 	const io = SocketIO(server, {path : '/socket.io'});
 	app.set('io',io);
 	const room = io.of('/room');
 	const chat = io.of('/chat');
 	const user = io.of('/user');
-	
+	const secret = app.get('jwt-secret');
 	user.on('connection',(socket)=>{
 		console.log('user 접속');
 		socket.on('disconnect',()=>{
@@ -16,20 +17,29 @@ module.exports = (server,app) =>{
 	});
 	
 	chat.on('connection', (socket) => {
-    console.log('chat 네임스페이스에 접속');
-    const req = socket.request;
-		// console.log(req.headers.cookie.split(';'));
-    const { headers: { referer } } = req;
-    const roomId = referer
-      .split('/')[referer.split('/').length - 1]
-      .replace(/\?.+/, '');
-		;
-		console.log(roomId);
-    socket.join(roomId);
-    socket.to(roomId).emit('join', {
-      user: 'system',
-      chat: `dd님이 입장하셨습니다.`,
-    })
+    	console.log('chat 네임스페이스에 접속');
+			const req = socket.request;
+			const cookie = req.headers.cookie
+			const index = cookie.indexOf('jwt');
+			const token = cookie.substr(index).split(';')[0].replace('jwt=','');
+			const g = jwt.verify(token,secret);
+    	const { headers: { referer } } = req;
+    	const roomId = referer
+      	.split('/')[referer.split('/').length - 1]
+      	.replace(/\?.+/, '');
+			;
+    	socket.join(roomId);
+    	socket.to(roomId).emit('join', {
+      	user: 'system',
+      	chat: g.id+`이 입장하셨습니다.`,
+    	})
+			socket.on('disconnect',()=>{
+				socket.to(roomId).emit('exit',{
+					user:	'system',
+					chat:	g.id+`님이 방을 나가셨습니다.`,
+				})
+				console.log('chat 접속 해제');
+			})	
 	});
 
 

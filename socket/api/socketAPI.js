@@ -69,7 +69,6 @@ router.post('/room', async (req, res, next) => {
   });
 
 router.post('/room/:id/chat', async (req, res, next) => {
-	console.log(req.body);	
 	try {
 			const chat = await Chat.create({
 				room: req.params.id,
@@ -87,10 +86,12 @@ router.post('/room/:id/chat', async (req, res, next) => {
 
 
 router.get('/room/:id', async (req, res, next) => {
+	// console.log(req.app);
 	const secret = req.app.get('jwt-secret');
 	try {
 		var token= req.cookies.jwt;
 		const g = jwt.verify(token,secret);
+		// const map = {user:'system',chat:g.id+'님이 입장하셨습니다'}
 	  const room = await Room.findOne({ _id: req.params.id });
 	  const io = req.app.get('io');
 	  if (!room) {
@@ -104,6 +105,7 @@ router.get('/room/:id', async (req, res, next) => {
 		return res.redirect('/?error=허용 인원이 초과하였습니다.');
 	  }
 	  const chats = await Chat.find({ room: room._id }).sort('createdAt');
+	  // req.app.get('io').of('/chat').emit('join',map);
 	  return res.render('chat', {
 		room,
 		title: room.title,
