@@ -1,0 +1,54 @@
+@import './reset.scss';
+@import './font.scss';
+
+// 반응형 설정
+
+$web1: 1920; // 1440
+$web1-1: 1440; // 1440
+$web2: 1366; // 1280
+$web2-1: 1280; // 1280
+$tablet: 768;
+$mobile: 375; // 360
+
+@mixin relative-portrait {
+  @media all and ( orientation: portrait ) {
+    @content;
+  }
+}
+@mixin relative-landscape {
+  @media all and ( orientation: landscape ) {
+    @content;
+  }
+}
+
+@mixin relative-web1 {
+  @media all and ( max-width: $web1 - 1 + px ) {
+    @content;
+  }
+}
+@mixin relative-web1-1 {
+  @media all and ( max-width: $web1-1 - 1 + px ) {
+    @content;
+  }
+}
+@mixin relative-web2 {
+  @media all and ( max-width: $web2 - 1 + px ) {
+    @content;
+  }
+}
+@mixin relative-web2-1 {
+  @media all and ( max-width: $web2-1 - 1 + px ) {
+    @content;
+  }
+}
+@mixin relative-tablet {
+  @media all and ( max-width: $tablet - 1 + px ) {
+    @content;
+  }
+}
+@mixin relative-mobile {
+  @media all and ( max-width: $mobile - 1 + px ) {
+    @content;
+  }
+}
+
