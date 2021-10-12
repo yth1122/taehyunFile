@@ -2,6 +2,7 @@
 
 {% block content %}
   <h1>{{title}}</h1>
+  <div>{{profile}}</div>
   <a href="/" id="exit-btn">방 나가기</a>
   <fieldset>
     <legend>채팅 내용</legend>
@@ -22,6 +23,13 @@
           </div>
         {% else %}
           <div class="other" >
+            {% if chat.info.profile %}
+            <span><img class='img' style='width:20px; float:left; border:0px ;' src = '{{chat.info.profile}}'></span>
+            {% else %}
+            <span><img class='img' style='width:20px; float:left; border:0px ;' src = '../images/default.png'></span>
+            
+            
+            {% endif %}
             <div>{{chat.user}}</div>
             {% if chat.gif %}
               <img src="/gif/{{chat.gif}}">

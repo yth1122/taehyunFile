@@ -4,10 +4,10 @@
 	<form action="/login" method="post" enctype="application/x-www-form-urlencoded" >
 		<div>
 			<input type="text" class='id' name="id" placeholder="아이디를 입력하세요"> <button type='button' class='check'>중복 검사</button>
-			<span class='true' style='color:green'>적합한 아이디입니다.</span>
+			<span class='true' style='color:green'>적합한 아이디입니다.</span><input type='hidden' class='valid' value=false>
 		</div>
 		<div>
-			<input type="text" class="name" name="name" placeholder="이름을 입력하세요" >
+			<input type="text" class="name" name="name" placeholder="닉네임을 입력하세요" >
 		</div>
 		<div>
 			<input type="password" class="pw" name="pw" placeholder="비밀번호(없으면 공개방)">
@@ -23,7 +23,6 @@
 	$('.check').on('click', function(){
 		var id = $('.id').val();
 		var suc= $('.suc').val();
-		console.log(suc);
 		if(id!=undefined){
 			// console.log(id);
 			axios.get('/login/check/'+id).then(result=>{
@@ -34,6 +33,7 @@
 					$('.id').focus();
 				}else{
 					$('.check').hide();
+					$('.valid').val(true);
 					$('.true').show();
 				}
 			})
@@ -43,16 +43,23 @@
 		var id = $('.id').val();
 		var pw = $('.pw').val();
 		var name = $('.name').val();
-		if(!id){
-			alert('id를 입력해주세요');
+		var valid = $('.valid').val();
+		if(valid == 'false'){
+			alert('중복성 체크를 해주세요');
 		}else{
-			if(!pw){
-				alert('passWord를 입력해주세요');
+			if(!id){
+				alert('id를 입력해주세요');
 			}else{
-				if(!name){
-					alert('이름을 입력해주세요')
+				if(!pw){
+					alert('passWord를 입력해주세요');
 				}else{
-					$('form').submit();
+					if(!name){
+						alert('이름을 입력해주세요');
+					}else{
+						$('form').submit();
+						$('.valid').val(false);
+						alert('회원가입 되었습니다.');
+					}
 				}
 			}
 		}

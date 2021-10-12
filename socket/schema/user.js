@@ -5,6 +5,7 @@ const userSchema = new Schema({
 	id:String,
 	name:String,
 	password:String,
+	profile:String,
 	createdAt:{
 		type:Date,
 		default:Date.now,

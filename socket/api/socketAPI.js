@@ -4,6 +4,7 @@ const localStorage = require("localStorage");
 const jwt = require('jsonwebtoken');
 const Room = require('../schema/room');
 const Chat = require('../schema/chat');
+const User = require('../schema/user');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -147,12 +148,33 @@ router.get('/room/:id', async (req, res, next) => {
 	  if (rooms && rooms[req.params.id] && room.max <= rooms[req.params.id].length) {
 		return res.redirect('/?error=허용 인원이 초과하였습니다.');
 	  }
-	  const chats = await Chat.find({ room: room._id }).sort('createdAt');
+	  // const chats = await Chat.find({ room: room._id }).sort('createdAt');
+		const chats = await Chat.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "id",
+          as: "info",
+					// pipeline:[
+					// 	{
+					// 		$match: {room:room._id}
+					// 	}
+					// ]
+        },
+      },
+      { $unwind: "$info" },
+			{$match : {room:room._id} }
+		],function(err,response){
+			console.log(response);
+			return response; 
+		});
+		// console.log(test);
 	  return res.render('chat', {
-		room,
-		title: room.title,
-		chats,
-		user: g.id,
+			room,
+			title: room.title,
+			chats,
+			user: g.id,
 	  });
 	} catch (error) {
 	  console.error(error);
