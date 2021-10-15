@@ -18,11 +18,11 @@ module.exports = (server,app) =>{
 	
 	chat.on('connection', (socket) => {
     	console.log('chat 네임스페이스에 접속');
-			const req = socket.request;
-			const cookie = req.headers.cookie
-			const index = cookie.indexOf('jwt');
-			const token = cookie.substr(index).split(';')[0].replace('jwt=','');
-			const g = jwt.verify(token,secret);
+		const req = socket.request;
+		const cookie = req.headers.cookie
+		const index = cookie.indexOf('jwt');
+		const token = cookie.substr(index).split(';')[0].replace('jwt=','');
+		const g = jwt.verify(token,secret);
     	const { headers: { referer } } = req;
     	const roomId = referer
       	.split('/')[referer.split('/').length - 1]

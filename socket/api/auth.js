@@ -12,12 +12,13 @@ var userMongo= require('../schema/user');
 // facebook.id='273494967956069';
 // facebook.pwd='e85398ec5df66547097d1eeb5a39acff';
 
-function check(id,name,profile,req,res){
-  userMongo.find({id:id}).then(r=>{
+function check(id,name,profile,type,req,res){
+  userMongo.find({id:id,type:type}).then(r=>{
     if(r.length==0){
       userMongo.create({
         id:id,
         name:name,
+        type:type,
         profile:profile
       })
     }else{
@@ -57,11 +58,10 @@ router.get('/kakao/callback',passport.authenticate('kakao',{
 	failureRedirect: '/',
 }),function(req,res){
   var info = req.user._json;
-  // console.log(info.kakao_account.email);
-  console.log(info.properties.nickname,info.properties.profile_image,info.kakao_account.email);
-  check(info.kakao_account.email,info.properties.nickname,info.properties.profile_image,req,res);
+  // console.log(req.user.provider);
+  // console.log(info.properties.nickname,info.properties.profile_image,req.user.provider,info.kakao_account.email);
+  check(info.kakao_account.email,info.properties.nickname,info.properties.profile_image,req.user.provider,req,res);
   // console.log(req.user.properties.nickname,req.user.properties.profile_image,req.user.kakao_account.email);
-	
 });
 
 //google
@@ -71,7 +71,7 @@ passport.use(new GoogleStrategy({
   //callbackURL: conf.callbackURL
   callbackURL: 'http://localhost:3000/auth/google/callback'
 },function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    // console.log(profile);
     return done(null,profile);
   }
 ));
@@ -80,7 +80,8 @@ router.get('/google',passport.authenticate('google',{scope: ['profile','email']}
 
 router.get('/google/callback', passport.authenticate('google'),(req, res)=>{
   var info = req.user;
-  check(info._json.email,info.name.givenName,info._json.picture,req,res);
+  console.log(info);
+  check(info._json.email,info.name.givenName,info._json.picture,info.provider,req,res);
  
   // var secret = req.app.get('jwt-secret');
   // let token = jwt.sign({
@@ -107,9 +108,9 @@ router.get('/naver',passport.authenticate('naver'));
 router.get('/naver/callback',passport.authenticate('naver',{
   failureRedirect:'/',
 }),function(req,res){
+  console.log(req.user);
   var info = req.user._json;
-  console.log(req.user._json);
-  check(info.email,info.nickname,info.profile_image,req,res);
+  check(info.email,info.nickname,info.profile_image,req.user.provider,req,res);
 });
 
 
@@ -121,7 +122,6 @@ passport.use(new FacebookStrategy({
   profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone',
     'updated_time', 'verified', 'displayName']
   }, function (accessToken, refreshToken, profile, done) {
-      console.log(accessToken);
       console.log(profile);
   }
 ));

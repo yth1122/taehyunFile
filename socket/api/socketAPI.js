@@ -78,7 +78,10 @@ router.post('/room/:id/chat', async (req, res, next) => {
 				user: req.body.user,
 				chat: req.body.chat,
 			});
-			req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+			const info = await User.find({id:chat.user});
+			const profile = info[0].profile;
+			console.log(profile);
+			req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat , profile);
 			res.send('ok');
 		} catch (error) {
 			console.error(error);
@@ -109,6 +112,28 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+router.post('/room/:id/emoticon', async (req, res, next) => {
+  const secret = req.app.get('jwt-secret');
+	try {
+		//req에서 쿠키를 받아 지정해둔 jwt token secret을 사용하여 id값을 받아옴 이름 사용시 g.name
+		var token= req.cookies.jwt;
+		const g = jwt.verify(token,secret);
+    var index = req.body.src.split('/');
+		var emo = index[index.length-1];
+		const chat = await Chat.create({
+      room: req.params.id,
+      user: g.id,
+      emoticon: emo,
+    });
+		const info = await User.find({id:chat.user});
+		const profile = info[0].profile;
+    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat , profile);
+		res.send('ok');
+	} catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 router.post('/room/:id/gif', upload.single('gif'), async (req, res, next) => {
   const secret = req.app.get('jwt-secret');
@@ -121,7 +146,9 @@ router.post('/room/:id/gif', upload.single('gif'), async (req, res, next) => {
       user: g.id,
       gif: req.file.filename,
     });
-    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+		const info = await User.find({id:chat.user});
+		const profile = info[0].profile;
+    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat , profile);
     res.send('ok');
   } catch (error) {
     console.error(error);
@@ -156,11 +183,6 @@ router.get('/room/:id', async (req, res, next) => {
           localField: "user",
           foreignField: "id",
           as: "info",
-					// pipeline:[
-					// 	{
-					// 		$match: {room:room._id}
-					// 	}
-					// ]
         },
       },
       { $unwind: "$info" },
@@ -169,7 +191,7 @@ router.get('/room/:id', async (req, res, next) => {
 			console.log(response);
 			return response; 
 		});
-		// console.log(test);
+		console.log(g,chats);
 	  return res.render('chat', {
 			room,
 			title: room.title,

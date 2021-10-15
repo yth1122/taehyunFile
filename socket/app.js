@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/gif', express.static(path.join(__dirname, 'uploads')));
+app.use('/emo',express.static(path.join(__dirname, 'public/emoticon')));
 app.use(logger('short'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}))

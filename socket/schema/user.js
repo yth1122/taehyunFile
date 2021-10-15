@@ -6,6 +6,7 @@ const userSchema = new Schema({
 	name:String,
 	password:String,
 	profile:String,
+	type:String,
 	createdAt:{
 		type:Date,
 		default:Date.now,

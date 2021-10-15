@@ -1,8 +1,12 @@
 <!DOCTYPE html>
   <html>
   <head>
+	  <link rel="icon" href="../images/naver.png" type="image/png">
     <meta charset="UTF-8">
 		<title>{{title}}</title>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<style>
 		body{background-color: #CEE5D0;}
 		/* background-image: url('../images/background.jpeg') ;  background-size: cover; background-repeat: no-repeat; */
@@ -21,6 +25,33 @@
 		.naver{
 			width:200px;
 		}
+		#popup{
+			align-items: stretch;
+    	box-sizing: border-box;
+    	display: flex;
+    	flex-basis: auto;
+    	flex-shrink: 0;
+			flex-wrap: wrap;
+    	position: relative;
+    	max-width: 100%;
+    	min-height: 0px;
+    	min-width: 0px;
+			max-height: 100%;
+			flex-direction: row;
+    	margin: 0px auto;
+    	border-width: initial;
+    	border-style: none;
+    	border-color: initial;
+    	border-image: initial;
+    	outline: none;
+    	padding: 0px 12px;
+		}
+		.emo_img{
+			width:120px;
+			margin : 10px;
+			border : 1px solid silver ;
+			border-radius: 10px;
+		}
 		.mine div:first-child, .other div:first-child { font-size: 12px; }
 		.mine div:last-child{
 			background-color:#FFEF78 ;
@@ -29,6 +60,11 @@
   			border-radius: 5px;
   			padding: 2px 5px;
   			max-width: 300px;
+			white-space: pre-wrap;
+			overflow:hidden;
+			word-wrap: break-word;
+			text-overflow: ellipsis;
+			text-align: left;
 		}
 		.other div:last-child{
 			background-color:white ;
@@ -37,28 +73,45 @@
   			border-radius: 5px;
   			padding: 2px 5px;
   			max-width: 300px;
+			white-space: pre-wrap;  
+			overflow:hidden;
+			word-wrap: break-word;
+			text-overflow: ellipsis;
+		}
+		.tag{
+			color:blue;
+			text-decoration: underline;
 		} 
 		.system{margin-top:5px; background-color:#E6E6E6;  text-align: center;}
-		#exit-btn { position: absolute; top: 20px; right: 20px; }
+		#exit-btn { position: absolute; top: 50px; right: 20px; }
 		#chat-list { height: 500px; overflow: auto; padding: 5px; background-color: white; }
 		#room-list { height: 500px; overflow: auto; padding: 5px; background-color: white; }
 		#chat-form { text-align: right; }
-		label[for='gif'], #chat, #chat-form [type='submit'] {
-  			display: inline-block;
+		label[for='gif'],label[for='emo'], #chat, #chat-form [type='submit'] {
+  			margin-top: 10px;
+			display: inline-block;
   			height: 30px;
   			vertical-align: top;
 		}
-		label[for='gif'] { cursor: pointer; padding: 5px; }
+		label[for='gif'],label[for='emo'] { cursor: pointer; padding: 5px; }
 		#gif { display: none; }
 		table, table th, table td {
   			text-align: center;
   			border: 1px solid silver;
   			border-collapse: collapse;
 		}
+		.img {
+			width:20px; 
+			float:left; 
+			border:0px; 
+		}
+		.logout{
+			float:right;
+		}
 	</style>
 	</head>
 	<body>
-		<button><a href='/login/logout'>LogOut</a></button>
+		<a class='logout' href='/login/logout'><img src='../images/logout.png'></a>
 		{% block content %}
 		{% endblock %}
 		{% block script %}
