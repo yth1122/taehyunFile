@@ -1,0 +1,29 @@
+@import './variables.scss';
+
+.title, * { font-family: $scd !important; }
+
+.bold {
+  font-weight: bolder !important;
+}
+.cf {
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.flex_row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.flex_column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+  align-items: center;
+}
