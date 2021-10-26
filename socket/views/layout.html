@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
   <head>
-	  <link rel="icon" href="../images/naver.png" type="image/png">
+	  <link rel="icon" href="../images/logo2.png" type="image/png">
     <meta charset="UTF-8">
 		<title>{{title}}</title>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -13,11 +13,11 @@
 		.mine { text-align: right;   }
 		.system { text-align: center; }
 		.mine img, .other img {
-  			max-width: 300px;
-  			display: inline-block;
-  			border: 1px solid silver;
-  			border-radius: 5px;
-  			padding: 2px 5px;
+  		max-width: 300px;
+  		display: inline-block;
+  		border: 1px solid silver;
+  		border-radius: 5px;
+  		padding: 2px 5px;
 		}
 		.kakao {
 			padding:5px;
@@ -25,41 +25,48 @@
 		.naver{
 			width:200px;
 		}
+	
 		#popup{
+   
+		}
+		#emoti{
 			align-items: stretch;
-    	box-sizing: border-box;
-    	display: flex;
-    	flex-basis: auto;
-    	flex-shrink: 0;
-			flex-wrap: wrap;
-    	position: relative;
-    	max-width: 100%;
-    	min-height: 0px;
-    	min-width: 0px;
-			max-height: 100%;
+			position: relative;
 			flex-direction: row;
-    	margin: 0px auto;
-    	border-width: initial;
+			border-width: initial;
     	border-style: none;
     	border-color: initial;
     	border-image: initial;
     	outline: none;
     	padding: 0px 12px;
+			max-width: 100%;
+    	min-height: 0px;
+    	min-width: 0px;
+			max-height: 100%;
+			box-sizing: border-box;
+    	display: flex;
+    	flex-basis: auto;
+    	flex-shrink: 0;
+			flex-wrap: wrap;
+    	margin: 0px auto;
 		}
 		.emo_img{
-			width:120px;
+			width:110px;
 			margin : 10px;
 			border : 1px solid silver ;
 			border-radius: 10px;
 		}
 		.mine div:first-child, .other div:first-child { font-size: 12px; }
+		#pw,#title,#person{
+			width:20%;
+		}
 		.mine div:last-child{
 			background-color:#FFEF78 ;
 			display: inline-block;
-  			border: 1px solid silver;
-  			border-radius: 5px;
-  			padding: 2px 5px;
-  			max-width: 300px;
+  		border: 1px solid silver;
+  		border-radius: 5px;
+  		padding: 2px 5px;
+  		max-width: 300px;
 			white-space: pre-wrap;
 			overflow:hidden;
 			word-wrap: break-word;
@@ -69,10 +76,10 @@
 		.other div:last-child{
 			background-color:white ;
 			display: inline-block;
-  			border: 1px solid silver;
-  			border-radius: 5px;
-  			padding: 2px 5px;
-  			max-width: 300px;
+  		border: 1px solid silver;
+  		border-radius: 5px;
+  		padding: 2px 5px;
+  		max-width: 300px;
 			white-space: pre-wrap;  
 			overflow:hidden;
 			word-wrap: break-word;
@@ -81,24 +88,47 @@
 		.tag{
 			color:blue;
 			text-decoration: underline;
-		} 
+		}
+		.join-btn{
+			cursor:pointer;
+			color:blue;
+			text-decoration: underline;
+		}
+		.plus{
+			background-color: #D8E3E7;
+			width : 40px;
+			margin-left:5%;
+			margin-top:10px;
+			border-radius: 20px;
+		}
 		.system{margin-top:5px; background-color:#E6E6E6;  text-align: center;}
 		#exit-btn { position: absolute; top: 50px; right: 20px; }
 		#chat-list { height: 500px; overflow: auto; padding: 5px; background-color: white; }
 		#room-list { height: 500px; overflow: auto; padding: 5px; background-color: white; }
+		#insert-room { height: 500px; overflow: auto; padding: 5px; background-color: white;  }
+		#room-table {
+			margin:auto;
+			width:90%
+		}
+		#room-table td,th{
+			height: 30px;
+		}
 		#chat-form { text-align: right; }
 		label[for='gif'],label[for='emo'], #chat, #chat-form [type='submit'] {
-  			margin-top: 10px;
+  		margin-top: 10px;
 			display: inline-block;
-  			height: 30px;
-  			vertical-align: top;
+  		height: 30px;
+  		vertical-align: top;
+		}
+		#add-room{
+			margin-top:20px;
 		}
 		label[for='gif'],label[for='emo'] { cursor: pointer; padding: 5px; }
 		#gif { display: none; }
 		table, table th, table td {
-  			text-align: center;
-  			border: 1px solid silver;
-  			border-collapse: collapse;
+  		text-align: center;
+  		border: 1px solid silver;
+  		border-collapse: collapse;
 		}
 		.img {
 			width:20px; 
@@ -111,7 +141,8 @@
 	</style>
 	</head>
 	<body>
-		<a class='logout' href='/login/logout'><img src='../images/logout.png'></a>
+		<a class='gomain' href='/'><img src='../images/logo2.png' style='width:50px;height:30px;'></a>
+		<a class='logout' href='/login/logout'><img style='background: transparent;' src='../images/logout.png'></a>
 		{% block content %}
 		{% endblock %}
 		{% block script %}

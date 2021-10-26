@@ -14,7 +14,7 @@
             {% if chat.gif %}
               <img src="/gif/{{chat.gif}}" >
             {% elif chat.emoticon %}
-              <img src="/emo/{{chat.emoticon}}">
+              <img src="/emo{{chat.emoticon}}">
             {% else %}
               {% if chat.chat.indexOf('#')== -1  %}
               <div class='normal'>{{chat.chat}}</div>
@@ -30,8 +30,10 @@
           </div>
         {% else %}
           <div class="other" >
+            <!--profile 있을시-->
             {% if chat.info.profile %}
             <span><img class='img' style='width:20px; float:left; border:0px ;' src = '{{chat.info.profile}}'></span>
+            <!-- profile picture 없을시 기본 사진-->
             {% else %}
             <span><img class='img' style='width:20px; float:left; border:0px ;' src = '../images/default.png'></span>
             {% endif %}
@@ -39,8 +41,9 @@
             {% if chat.gif %}
               <img src="/gif/{{chat.gif}}">
             {% elif chat.emoticon %}
-              <img src="/emo/{{chat.emoticon}}">
+              <img src="/emo{{chat.emoticon}}">
             {% else %}
+            <!--#이 들어갈 경우 click시 naver 키워드로 검색  -->
               {% if chat.chat.indexOf('#')== -1  %}
               <div class='normal'>{{chat.chat}}</div>
               {% else %}            
@@ -52,21 +55,15 @@
       {% endfor %}
     </div>
   </fieldset>
+  <!--
+    이모티콘 리스트 나중에 db로 데이터 긁어서 사용
+  -->
   <div id="popup">
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/chu.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/cute.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo1.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo2.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo3.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo4.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo5.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo6.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo7.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo8.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo9.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo10.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo11.png"></div>
-    <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/emo12.png"></div>
+    <div id='emoti' >
+      {% for emo in emoti %}
+      <div class='emo_btn' role="button"><img class='emo_img' src="../emoticon/{{emo.path}}{{emo.info.name}}"></div>
+      {% endfor %}  
+    </div>
   </div>
   <form action="/chat" id="chat-form" method="post" enctype="multipart/form-data">
     <input type='hidden' id='user' name='user' value="{{user}}">
@@ -79,6 +76,7 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    var gogogo='brrrr';
      $('#popup').hide();
      tag();
     const last =  $('#chat-list div:last-child').length;
@@ -134,7 +132,7 @@
         div.appendChild(chat);
       } else if(data.emoticon) {
         const emoticon = document.createElement('img');
-        emoticon.src = '/emo/'+data.emoticon ; 
+        emoticon.src = '/emo'+data.emoticon ; 
         div.appendChild(emoticon);
       } else {
         const gif = document.createElement('img');
@@ -148,7 +146,6 @@
     });
     function tag(){
       $('.tag').on('click',function(e){
-      console.log(e.target.textContent.replace('#',''));
       const keyword = e.target.textContent.replace('#','');
       const search_url = 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=';
       window.open(search_url+keyword,'search',"width=1000,height:1000");
@@ -169,15 +166,7 @@
         });
       }
     });
-    // function f(a){
-    //   var image = document.createElement('img');
-    //   image.src = '/gif/' + a;
-    //   document.querySelector('#chat-list').appendChild(image);
-    //   console.log(a);
-    // }
-    // document.querySelector('img').addEvenetListener('click',function(e){
-    //   console.log(e);
-    // })
+
     document.querySelector('#emo').addEventListener('click',function(e){
       $('#popup').show();
 
@@ -188,8 +177,15 @@
         height:350,
       });
     });
-
+    $('.emo_list').on('click',function(e){
+      console.log(e.target.dataset.id);
+      axios.get('/test/'+e.target.dataset.id).then(r=>{
+        console.log(r.data);
+      })
+    
+    })
     $('.emo_btn').on('click',function(e){
+      // console.log(e.target.src);
       axios.post('/room/{{room._id}}/emoticon',{
         src : e.target.src
       }).then(() => {
@@ -202,9 +198,7 @@
 
     document.querySelector('#gif').addEventListener('change', function (e) {
       const formData = new FormData();
-      console.log(e.target.files);
       formData.append('gif', e.target.files[0]);
-      console.log(formData);
       axios.post('/room/{{room._id}}/gif', formData)
         .then(() => {
           e.target.file = null;

@@ -5,23 +5,25 @@ const jwt = require('jsonwebtoken');
 const Room = require('../schema/room');
 const Chat = require('../schema/chat');
 const User = require('../schema/user');
+const Emoticon= require('../schema/emoticon');
+const List = require('../schema/emoticon_list'); 
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
-function check(req,res){
-	if(!req.cookies.jwt){
-		console.log('ggg');
-		res.redirect('/login');
-	}else{
-		res.next; 
-	}
-}
-
-router.get('/chat',function(req,res,next){
-
+router.get('/test',async function(req,res){
+	var id = req.params.id;
+	try{
+		const test = await Emoticon.create({ id:1,
+		path:'cute/',
+		name:'순딩'});
+		console.log(test);
+	// res.send(test);
+	}catch(err){
+		res.status(500).send(err);
+	}	
+	
 })
-
 
 
 router.get('/regUser',function(req,res){
@@ -35,7 +37,6 @@ router.get('/',async function(req,res){
 	const rooms = await Room.find({}).sort({'createdAt':-1});
 	try{
 		if(!req.cookies.jwt){
-			console.log('go login');
 			res.redirect('/login');
 		}else{
 			console.log('go main')
@@ -118,12 +119,13 @@ router.post('/room/:id/emoticon', async (req, res, next) => {
 		//req에서 쿠키를 받아 지정해둔 jwt token secret을 사용하여 id값을 받아옴 이름 사용시 g.name
 		var token= req.cookies.jwt;
 		const g = jwt.verify(token,secret);
-    var index = req.body.src.split('/');
-		var emo = index[index.length-1];
+    var index = req.body.src.split('/emoticon');
+		console.log(index[1]);
+		// var emo = index[index.length-1];
 		const chat = await Chat.create({
-      room: req.params.id,
-      user: g.id,
-      emoticon: emo,
+    	room: req.params.id,
+    	user: g.id,
+    	emoticon: index[1],
     });
 		const info = await User.find({id:chat.user});
 		const profile = info[0].profile;
@@ -176,6 +178,22 @@ router.get('/room/:id', async (req, res, next) => {
 		return res.redirect('/?error=허용 인원이 초과하였습니다.');
 	  }
 	  // const chats = await Chat.find({ room: room._id }).sort('createdAt');
+		const emoti = await Emoticon.aggregate([
+      {
+        $lookup: {
+          from: "lists",
+          localField: "id",
+          foreignField: "parent",
+          as: "info",
+        },
+      },
+      { $unwind: "$info" },
+		],function(err,response){
+			return response; 
+		});;
+		console.log(emoti);
+
+
 		const chats = await Chat.aggregate([
       {
         $lookup: {
@@ -188,14 +206,13 @@ router.get('/room/:id', async (req, res, next) => {
       { $unwind: "$info" },
 			{$match : {room:room._id} }
 		],function(err,response){
-			console.log(response);
 			return response; 
 		});
-		console.log(g,chats);
 	  return res.render('chat', {
 			room,
 			title: room.title,
 			chats,
+			emoti,
 			user: g.id,
 	  });
 	} catch (error) {

@@ -2,24 +2,43 @@
   <html>
   <head>
 	<meta charset="UTF-8">
-		<h1>Login</h1>
 	</head>
 	<body>
+		<div id='left' style='min-width: 0px; display: flex; margin-top: 50px; align-items: center; min-height:0px; width:45%; height:500px' >
+			<img src='../images/loginpage.svg' style="  vertical-align: baseline; margin:auto" >
+		</div>
+		<div id='right' 
+			style="padding: 0;
+    		border: 0;
+    		font: inherit;
+    		vertical-align: baseline; 
+				float:right; ">	
 		<!-- <form action='/login/login' method='post' enctype="application/x-www-form-urlencoded"> -->
-			<span>id : </span>	
-			<input class='id' name='id' type='text'>
+			<span>ID : </span>	
+			<input class='id' name='id' type='text' style="width:300px; height:40px; line-height: 1.21428571em;
+			font-size: 1em; border-radius: .28571429rem;box-shadow: inset 0 0 0 1px #bbc5d8; " placeholder="아이디를 입력하세요">
 			<br>
 			<span>PassWord : </span>
-			<input class='pw' name='pw' style='margin-top:20px' type='password'>
+			<input class='pw' name='pw' style='margin-top:20px;width:300px; line-height: 1.21428571em;
+			height:40px; border-radius: .28571429rem; font-size: 1em;box-shadow: inset 0 0 0 1px #bbc5d8; ' type='password' placeholder="비밀번호를 입력하세요">
 			<br>
-			<input type=button class='submit' value='로그인' style='margin-top:20px; margin-right:15px'>
-			<button type='button' onclick="location.href='/regUser'"  >회원가입</button>
+			<input type=button 
+				style="margin-top:20px;
+				  border-radius: .28571429rem; 
+					margin-right:15px;
+					margin-bottom: 20px;
+					color:white; 
+					background: #1597E5;
+					text-align: center;
+					height:40px;
+					width:150px;" class='submit' value='로그인' >
+			<span>회원이 아니신가요? </span><a href='/regUser'> 회원가입</a> 
 			<br>
 			<a href='auth/kakao' class='kakao'><img class='kakao' src='../images/kakao_login_medium_narrow.png' style='width:200px; height:50px; padding:10px;'></a>
 			<a href='auth/naver' class='naver'><img class='naver' src='../images/naver.png' style='width:200px; height:50px; padding:10px;'></a>
 			<a href='auth/google' class='google'><img class='google' src='../images/googleLogin.png' style='width:200px; height:50px; padding:10px;'></a>
 			<!-- </form> -->
-		
+		</div>	
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>	
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script>

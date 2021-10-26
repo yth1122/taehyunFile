@@ -2,8 +2,7 @@
 {% block content %}
 <h1>오픈 채팅창</h1>
 <fieldset id='room-list'>
-	<legend>room list</legend>
-	<table>
+	<table id='room-table' style="margin-top: 3%;">
 		<thead>
 			<tr>
 				<th>방 제목</th>
@@ -15,25 +14,22 @@
 		<tbody>
 			{% for room in rooms %}
 				<tr data-id="{{room._id}}">	
-					<td>{{room.title}}</td>
+					<td 
+						data-password="{{'true' if room.password else 'false'}}"
+						data-id="{{room._id}}"
+						class="join-btn"
+					>
+						{{room.title}}
+					</td>
 					<td>{{'비밀방' if room.password else '공개방'}}</td>
 					<td>{{room.max}}</td>
 					<td >{{room.owner}}</td>
-					<td>
-						<button 
-							data-password="{{'true' if room.password else 'false'}}"
-							data-id="{{room._id}}"
-							class="join-btn"
-							>
-						입장
-						</button>
-					</td>
 				</tr>
 			{% endfor %}	
 		</tbody>
 	</table>
 	<div class="error-message">{{error}}</div>
-	<a href="/room">채팅방 생성</a>	
+	<a id='add-room' href="/room"><img class='plus' src='../images/plus.png'></a>	
 </fieldset>
 <script src="/socket.io/socket.io.js"></script>
 <script>

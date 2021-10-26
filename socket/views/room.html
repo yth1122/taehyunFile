@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
 {% block content %}
+<h1>{{title}}</h1>
 <fieldset>
-	<legend>채팅방 생성</legend>
-	<form action="/room" method="post">
+	<form action="/room" method="post" id='insert-room'>
 		<div>
-			<input type="text" name="title" placeholder="방 제목">
+			<input type="text" id='title' name="title" placeholder="방 제목">
 		</div>
 		<div>
-			<input type="number" name="max" placeholder="수용 인원 (최소 2명)" min="2" value='10'>
+			<input type="number" id='person' name="max" placeholder="수용 인원 (최소 2명)" min="2" value='10'>
 		</div>
 		<div>
-			<input type="password" name="password" placeholder="비밀번호(없으면 공개방)">
+			<input type="password" id='pw' name="password" placeholder="비밀번호(없으면 공개방)">
 		</div>
 		<div>
 			<button type="submit">생성</button>
