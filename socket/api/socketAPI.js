@@ -28,7 +28,7 @@ router.get('/test',async function(req,res){
 
 router.get('/regUser',function(req,res){
 	try{
-		res.render('regUser');
+		res.render('regUser',{title:'TAETAE'});
 	}catch(err){
 		res.status(500).send(err);
 	}

@@ -97,7 +97,7 @@ router.get('/',function(req,res){
 	console.log('why');
 	try{
 		// res.cookie('user',{name:'taehyun',age:28})
-		res.render('login.html');
+		res.render('login.html',{title:'TAETAE'});
 	}catch(err){
 		res.status(500).send(err);
 	}
