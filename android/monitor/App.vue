@@ -1,5 +1,10 @@
 <template>
   <view class='container'>
+   <SafeAreaView> 
+    <ScrollView>
+    <refresh render-prop="refreshControl"/>
+    </ScrollView>
+   </SafeAreaView>
     <view class='container' >
       <status-bar
             background-color="white"
@@ -20,42 +25,42 @@
           :rightIcons="rightIcons" 
           :disableStatusBarHandling="false"
           />
-          
-          <!-- <DrawerLayoutAndroid v-if='bool' ref='drawer' 
+          <DrawerLayoutAndroid  ref='drawer' 
             :drawerWidth="300"
             drawerPostion="Left"
           >
-          <sidemenu render-prop-fn="rederNavigationView"></sidemenu>
-          <slot></slot>
-          </DrawerLayoutAndroid> -->
-          <test/>
+            <sidemenu render-prop-fn="renderNavigationView"/>
+            <web-view useWebKit={true}
+              :source="{
+                uri:url,
+            }"/> 
+          </DrawerLayoutAndroid>
 
 
          <!-- <text class='title'>Android so difficult</text>  -->
-          <web-view useWebKit={true}
-            :source="{
-              uri:url,
-            }" 
-          />
+      
     </view>
-  </view>  
+  </view>
 </template>
 <script>
 import React,{useRef , useState} from "react";
 import { WebView } from "react-native-webview";
-import { StyleSheet,Button,RefreshControl, DrawerLayoutAndroid, Text, View ,Alert } from 'react-native';
+import { StyleSheet,Button, DrawerLayoutAndroid, Text, View ,Alert,RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import ActionBar from 'react-native-action-bar';
 import sidemenu from './src/SideMenu.vue';
-import test from './src/test.js';
-const navigationView = sidemenu;
+import refresh from './src/refresh.js';
 export default {
   name: "myComponent",
   data(){
     return{
       bool:false,
+      qqq:  <view >
+            <text>I'm in the Drawer!</text>
+          </view>,
       url:'https://mon-dot-centered-sight-237801.an.r.appspot.com/',
       searchQuery:null,
       navigation:sidemenu,
+      position:null,
       rightIcons:[
          {
             name: 'star',
@@ -64,7 +69,7 @@ export default {
         {
             name: 'phone',
             onPress: () => alert('Right Phone !'),
-            isBadgeLeft: true,
+            isBadgeLeft:true,
         },
         {
             name: 'plus',
@@ -81,12 +86,13 @@ export default {
   components: {
     "web-view": WebView,
     "button" :Button,
-    "RefreshControl" : RefreshControl,
     "ActionBar" : ActionBar,
     "sidemenu" : sidemenu,
     "DrawerLayoutAndroid":DrawerLayoutAndroid,
-    "navigationView":navigationView,
-    "test":test
+    ScrollView,
+    SafeAreaView,
+    RefreshControl,
+    refresh
   },
   methods:{
     onPressLearnMore: function() {
@@ -95,11 +101,8 @@ export default {
     },
     open(){
       this.bool=true;
+      this.$refs.drawer.openDrawer()
     },
-    // onRefresh(){
-    //   this.bool=true;
-    //   this.bool=false;
-    // },
   },
   mounted:function(){
   }

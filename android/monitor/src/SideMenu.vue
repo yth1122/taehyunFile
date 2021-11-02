@@ -15,7 +15,7 @@
       ">
         <image
           :style="{height: 72, width: 72, borderRadius: 37}"  
-          :source="{uri: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png' }" 
+          :source="{uri: 'https://mon-dot-centered-sight-237801.an.r.appspot.com/web/BAROFACTORY.png' }" 
         />
         <text
           :style="{
@@ -28,12 +28,12 @@
             textAlign: 'left',
             color: '#272727',
             }">
-          airplane
+          BaroFactory
         </text>
       </view>
       <view>
           <view v-for="data in list"
-								:key="data.index"
+								:key="data.idx"
 					>
             <touchable-opacity
               :style="{
@@ -43,7 +43,7 @@
                 paddingTop: 27,
                 paddingLeft: 30,
                 }"
-            :onPress="sex">
+                @click='fuck(data.idx)'>
               <text
                 :style="{
                   marginLeft: 12,
@@ -59,6 +59,7 @@
     </view>
 </template>
 <script>
+import {Alert} from 'react-native'
 export default {
   name: "myComponent",
   data(){
@@ -106,8 +107,8 @@ export default {
   components: {
   },
   methods:{
-		sex(){
-			alert('fuck');
+		fuck(){
+			Alert.alert('fuck');
 		}
   },
   mounted:function(){

@@ -5,6 +5,7 @@ import ActionBar from 'react-native-action-bar';
 const App = () => {
   const drawer = useRef(null);
   const [drawerPosition] = useState("left");
+  
   const mon_url = 'https://mon-dot-centered-sight-237801.an.r.appspot.com/';
   var aps_url = 'https://aps.yhs.dev/';
   var dt_url = 'https://dt.yhs.dev/';
@@ -15,6 +16,7 @@ const App = () => {
           title: '소개',
         },
         {
+          idx: 1,
           title: 'APS',
         },
         {
