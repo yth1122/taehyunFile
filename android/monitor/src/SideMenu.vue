@@ -1,6 +1,7 @@
 <template>
     <view
-      :style="{borderTopRightRadius: 50,
+      :style="{
+        borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
         backgroundColor: 'white',
         flex: 1}"
@@ -10,6 +11,7 @@
           height: 200,
           backgroundColor: 'rgba(213,213,213,0.27)',
           borderTopRightRadius: 50,
+          borderBottomRightRadius: 50,
           paddingTop: 50,
           paddingLeft: 30,}
       ">
@@ -43,7 +45,9 @@
                 paddingTop: 27,
                 paddingLeft: 30,
                 }"
-                @click='fuck(data.idx)'>
+                :on-press='()=>{
+                  fuck(data)
+                }'>
               <text
                 :style="{
                   marginLeft: 12,
@@ -59,7 +63,7 @@
     </view>
 </template>
 <script>
-import {Alert} from 'react-native'
+import { Alert } from 'react-native'
 export default {
   name: "myComponent",
   data(){
@@ -67,48 +71,54 @@ export default {
 			list: [
         {
           idx: 0,
-          title: '소개',
+          title: 'APS',
+          url:'https://aps.yhs.dev',
+          checked:false,
         },
         {
           idx: 1,
-          title: '공지사항',
+          title: 'DT',
+          url:'https://dt.yhs.dev',
+          checked:false,
         },
         {
           idx: 2,
-          title: '정보',
+          title: 'Monitor',
+          url:'https://mon-dot-centered-sight-237801.an.r.appspot.com/',
+          checked:false,
         },
         {
           idx: 3,
-          title: '뉴스',
+          title: '공식사이트',
+          url:'https://yhsbearing.co.kr/',
+          checked:false,
         },
-        {
+          {
           idx: 4,
-          title: '포인트',
+          title: 'google',
+          url:'https://google.com/',
+          checked:false,
         },
-        {
+         {
           idx: 5,
-          title: '초대',
+          title: 'YouTube',
+          url:'https://www.youtube.com/',
+          checked:false,
         },
-        {
-          idx: 6,
-          title: '고객센터',
-        },
-        {
-          idx: 7,
-          title: '설정',
-        },
-        {
-          idx: 8,
-          title: '로그아웃',
-        },
+        
 			]
 		}
   },
   components: {
   },
   methods:{
-		fuck(){
-			Alert.alert('fuck');
+		fuck(v){
+      if(v.url){
+         this.$emit('picked',v.url);
+      }else{
+        alert('hello');
+      }
+     
 		}
   },
   mounted:function(){

@@ -25,11 +25,11 @@
           :rightIcons="rightIcons" 
           :disableStatusBarHandling="false"
           />
-          <DrawerLayoutAndroid  ref='drawer' 
+          <DrawerLayoutAndroid  ref='drawer'
             :drawerWidth="300"
             drawerPostion="Left"
           >
-            <sidemenu render-prop-fn="renderNavigationView"/>
+            <sidemenu render-prop-fn="renderNavigationView" @picked='gg'  />
             <web-view useWebKit={true}
               :source="{
                 uri:url,
@@ -100,9 +100,12 @@ export default {
       // Alert.alert('hi');
     },
     open(){
-      this.bool=true;
-      this.$refs.drawer.openDrawer()
+      this.$refs.drawer.openDrawer();
     },
+    gg(v){
+      this.url = v;
+      this.$refs.drawer.closeDrawer(); 
+    }
   },
   mounted:function(){
   }
