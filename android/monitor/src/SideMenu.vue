@@ -17,7 +17,7 @@
       ">
         <image
           :style="{height: 72, width: 72, borderRadius: 37}"  
-          :source="{uri: 'https://mon-dot-centered-sight-237801.an.r.appspot.com/web/BAROFACTORY.png' }" 
+          :source="require('../assets/BAROFACTORY.png')" 
         />
         <text
           :style="{

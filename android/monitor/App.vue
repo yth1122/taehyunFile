@@ -11,6 +11,7 @@
             color="black"
             bar-style="dark-content"
         />
+        <back  />
       <!-- <button 
         :on-press="onPressLearnMore"
         title="BaroFactory"
@@ -43,42 +44,43 @@
   </view>
 </template>
 <script>
-import React,{useRef , useState} from "react";
+import React,{useRef , useState , useEffect} from "react";
 import { WebView } from "react-native-webview";
-import { StyleSheet,Button, DrawerLayoutAndroid, Text, View ,Alert,RefreshControl, SafeAreaView, ScrollView } from 'react-native';
+// share kakao talk or message etc .. share.share({message:})
+// Vibration.vibrate 
+// BackHandler 뒤로가기 버튼 
+import { StyleSheet,Button, DrawerLayoutAndroid, Text, View ,Alert,RefreshControl, SafeAreaView, ScrollView,Linking,Share,Vibration,BackHandler } from 'react-native';
 import ActionBar from 'react-native-action-bar';
 import sidemenu from './src/SideMenu.vue';
 import refresh from './src/refresh.js';
+import back from './src/back.js';
 export default {
   name: "myComponent",
   data(){
     return{
       bool:false,
-      qqq:  <view >
-            <text>I'm in the Drawer!</text>
-          </view>,
       url:'https://mon-dot-centered-sight-237801.an.r.appspot.com/',
       searchQuery:null,
       navigation:sidemenu,
       position:null,
       rightIcons:[
-         {
-            name: 'star',
-            onPress: () => alert('Right Star !'),
-        },
+        //  {
+        //     name: 'star',
+        //     onPress: () => alert('Right Star !'),
+        // },
         {
             name: 'phone',
-            onPress: () => alert('Right Phone !'),
+            onPress: () => Linking.openURL(`tel:01066518393`),
             isBadgeLeft:true,
         },
         {
-            name: 'plus',
-            onPress: () => alert('Right Plus !'),
+            image:require('./assets/share.png'),
+            onPress: () => Share.share({message:'https://mon-dot-centered-sight-237801.an.r.appspot.com/'})
         },
         {
             name: 'flag',
             badge: '10',
-            onPress: () => alert('Right Flag !'),
+            onPress: () => Vibration.vibrate(),
         },
       ]
     }
@@ -92,7 +94,8 @@ export default {
     ScrollView,
     SafeAreaView,
     RefreshControl,
-    refresh
+    refresh,
+    back,
   },
   methods:{
     onPressLearnMore: function() {
@@ -105,10 +108,18 @@ export default {
     gg(v){
       this.url = v;
       this.$refs.drawer.closeDrawer(); 
-    }
+    },
+    reload(){
+      this.$forceUpdate();
+    },
   },
-  mounted:function(){
+  mounted(){
+  },
+  created(){
+  },
+  beforeDestroy(){
   }
+
 };
 </script>
 <style>
