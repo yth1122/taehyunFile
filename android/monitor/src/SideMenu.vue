@@ -99,13 +99,18 @@ export default {
           url:'https://google.com/',
           checked:false,
         },
-         {
+        {
           idx: 5,
           title: 'YouTube',
           url:'https://www.youtube.com/',
           checked:false,
         },
-        
+         {
+          idx: 6,
+          title: 'BaroFactory',
+          url:'https://barofactory.kr/',
+          checked:false,
+        },
 			]
 		}
   },
